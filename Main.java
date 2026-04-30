@@ -9,9 +9,9 @@ public class Main {
         //настраиваем библиотеки
         Scanner scanner = new Scanner(System.in);
         List<String> list = new ArrayList<>();
-        System.out.println("console notepad v0.1 beta");
-        int id_text = 0;
-        int i = 0;
+        System.out.println("console notepad v0.2 beta");
+        int id_text = -1;
+
         boolean working = true;
         while (working){
             System.out.println("выберите команду: ");
@@ -30,29 +30,40 @@ public class Main {
                     if (text.isEmpty()){
                         System.out.println("вы нечего не ввели");
                     }else {
+                        id_text++;
+
                         list.add(text);
                         System.out.println("id сохранённого текста: " + id_text);
-                        if (i == 0){
-                            id_text++;
-                        }else {
-                            i++;
-                        }
                     }
                     break;
                 case "take out":
-                    int reBag = id_text - 1;
-                    System.out.println("введите id объекта который хотите вывести, максимальный id:" + reBag);
+                    if (id_text >= 0){
+                        System.out.println("введите id объекта который хотите вывести, максимальный id:" + id_text);
 
-                    int zapros_id = scanner.nextInt();
-                    scanner.nextLine();
-                    if (zapros_id > id_text){
-                        comands.Too_big_id();
+                        int zapros_id = scanner.nextInt();
+                        scanner.nextLine();
+                        if (zapros_id > id_text){
+                            comands.Too_big_id();
+                        }else {
+                            System.out.println(list.get(zapros_id));
+                        }
                     }else {
-                        System.out.println(list.get(zapros_id));
+                        System.out.println("лист пуст");
                     }
                     break;
                 case "take out all":
                     System.out.println(list);
+                    break;
+                case "clear":
+                    System.out.println("вы уверены? (y/n): ");
+                    String clear = scanner.nextLine();
+                    if (clear.equals("y")){
+                        list.clear();
+                        id_text = -1;
+                        comands.clear_list();
+                    }else {
+                        System.out.println("действие отменено");
+                    }
                     break;
                 default:
                     comands.error_not_command();
